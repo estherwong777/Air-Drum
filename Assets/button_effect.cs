@@ -11,40 +11,47 @@ public class button_effect : MonoBehaviour, IVirtualButtonEventHandler {
     private GameObject virtualTomButton;
 
     private AudioSource hiHatSound;
-    private AudioClip hihat;
+    private AudioSource snareSound;
+    private AudioSource bassSound;
+    private AudioSource tomSound;
 
     public void OnButtonPressed(VirtualButtonAbstractBehaviour vb)
     {
         Debug.Log(vb.VirtualButtonName);
-        //When a virtual button is pressed
         switch (vb.VirtualButtonName) {
             case "hiHatButton" :
                 Debug.Log("Hihat pressed");
-
                 //Play music
                 hiHatSound.Play();
                 //Spin cube
                 break;
             case "snareButton" :
                 Debug.Log("Snare pressed");
-
+                snareSound.Play();
                 break;
             case "bassButton" :
                 Debug.Log("Bass pressed");
-
+                bassSound.Play();
                 break;
             case "tomButton" :
                 Debug.Log("Tom pressed");
-
+                tomSound.Play();
                 break;
         }
     }
 
     public void OnButtonReleased(VirtualButtonAbstractBehaviour vb)
     {
-        //Nothing is done when button is released
+        stopAllSound();
     }
 
+    private void stopAllSound()
+    {
+        hiHatSound.Stop();
+        snareSound.Stop();
+        bassSound.Stop();
+        tomSound.Stop();
+    }
     // Use this for initialization
     void Start()
     {
@@ -58,20 +65,15 @@ public class button_effect : MonoBehaviour, IVirtualButtonEventHandler {
             vbs[i].RegisterEventHandler(this);
         }
 
+        // Setting up audio sources
         AudioSource[] audiosrcs = GetComponentsInChildren<AudioSource>();
         hiHatSound = audiosrcs[0];
+        snareSound = audiosrcs[1];
+        bassSound = audiosrcs[2];
+        tomSound = audiosrcs[3];
 
+        stopAllSound();
 
-        /*
-        virtualHiHatButton = GameObject.Find("hiHatButton");
-        virtualSnareButton = GameObject.Find("snareButton");
-        virtualTomButton = GameObject.Find("tomButton");
-        virtualBassButton = GameObject.Find("bassButton");
-
-        virtualHiHatButton.SetActive(true);
-        virtualSnareButton.SetActive(true);
-        virtualTomButton.SetActive(true);
-        virtualBassButton.SetActive(true); */
 	}
 	
 	// Update is called once per frame
