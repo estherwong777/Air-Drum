@@ -5,53 +5,91 @@ using Vuforia;
 
 public class button_effect : MonoBehaviour, IVirtualButtonEventHandler {
 
-    private GameObject virtualHiHatButton;
-    private GameObject virtualSnareButton;
-    private GameObject virtualBassButton;
-    private GameObject virtualTomButton;
+    public GameObject purpleCube;
+    public GameObject redCube;
+    public GameObject blueCube;
+    public GameObject greenCube;
 
     private AudioSource hiHatSound;
     private AudioSource snareSound;
     private AudioSource bassSound;
     private AudioSource tomSound;
 
+    private static Color blue;
+    private static Color red;
+    private static Color green;
+    private static Color purple;
+
     public void OnButtonPressed(VirtualButtonAbstractBehaviour vb)
     {
         Debug.Log(vb.VirtualButtonName);
         switch (vb.VirtualButtonName) {
             case "hiHatButton" :
-                Debug.Log("Hihat pressed");
-                //Play music
+                blueCube.GetComponent<Renderer>().material.color = Color.white;
                 hiHatSound.Play();
-                //Spin cube
                 break;
             case "snareButton" :
-                Debug.Log("Snare pressed");
+                greenCube.GetComponent<Renderer>().material.color = Color.white;
                 snareSound.Play();
                 break;
             case "bassButton" :
-                Debug.Log("Bass pressed");
+                redCube.GetComponent<Renderer>().material.color = Color.white;
                 bassSound.Play();
                 break;
             case "tomButton" :
-                Debug.Log("Tom pressed");
+                purpleCube.GetComponent<Renderer>().material.color = Color.white;
                 tomSound.Play();
                 break;
         }
     }
 
+
     public void OnButtonReleased(VirtualButtonAbstractBehaviour vb)
     {
-        stopAllSound();
+        StopSound();
+
+        //Changing cubes to original colors
+        blueCube.GetComponent<Renderer>().material.color = blue;
+        redCube.GetComponent<Renderer>().material.color = red;
+        purpleCube.GetComponent<Renderer>().material.color = purple;
+        greenCube.GetComponent<Renderer>().material.color = green;
+ 
     }
 
-    private void stopAllSound()
+
+    private void InitAudio()
+    {
+        // Setting up audio sources
+        AudioSource[] audiosrcs = GetComponentsInChildren<AudioSource>();
+        hiHatSound = audiosrcs[0];
+        snareSound = audiosrcs[1];
+        bassSound = audiosrcs[2];
+        tomSound = audiosrcs[3];
+
+        // Make sure sounds don't play on initialization
+        StopSound();
+    }
+
+
+    private void StopSound() 
     {
         hiHatSound.Stop();
         snareSound.Stop();
         bassSound.Stop();
         tomSound.Stop();
     }
+
+
+    private void InitColors() 
+    {
+        // Initialize original colors of the cubes
+
+        blue = blueCube.GetComponent<Renderer>().material.color;
+        red = redCube.GetComponent<Renderer>().material.color;
+        purple = purpleCube.GetComponent<Renderer>().material.color;
+        green = greenCube.GetComponent<Renderer>().material.color;
+    }
+     
     // Use this for initialization
     void Start()
     {
@@ -65,14 +103,9 @@ public class button_effect : MonoBehaviour, IVirtualButtonEventHandler {
             vbs[i].RegisterEventHandler(this);
         }
 
-        // Setting up audio sources
-        AudioSource[] audiosrcs = GetComponentsInChildren<AudioSource>();
-        hiHatSound = audiosrcs[0];
-        snareSound = audiosrcs[1];
-        bassSound = audiosrcs[2];
-        tomSound = audiosrcs[3];
-
-        stopAllSound();
+        InitAudio();
+        StopSound();
+        InitColors();
 
 	}
 	
