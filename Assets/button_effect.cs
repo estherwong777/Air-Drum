@@ -111,6 +111,6 @@ public class button_effect : MonoBehaviour, IVirtualButtonEventHandler {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        
 	}
 }
